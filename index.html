@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clima Chile</title>
+
+
+
+
+<style>
+
+:root{
+  --bg:#0f172a;
+  --card:#1e293b;
+  --card2:#334155;
+  --text:#fff;
+  --muted:#cbd5e1;
+  --accent:#3b82f6;
+}
+
+.card{
+
+    backdrop-filter:
+    blur(20px);
+
+    background:
+    rgba(255,255,255,.08);
+
+    border:
+    1px solid rgba(255,255,255,.1);
+
+}
+
+.icon{
+    position:relative;
+    width:120px;
+    height:120px;
+}
+
+.sun{
+    position:absolute;
+    width:55px;
+    height:55px;
+    background:#ffd43b;
+    border-radius:50%;
+    top:15px;
+    left:30px;
+    box-shadow:0 0 20px #ffd43b;
+    animation:spin 14s linear infinite;
+}
+
+.sun:before{
+    content:'';
+    position:absolute;
+    inset:-12px;
+    border:3px dashed #ffd43b;
+    border-radius:50%;
+}
+
+.cloud{
+    position:absolute;
+    bottom:25px;
+    left:18px;
+    width:75px;
+    height:30px;
+    background:#fff;
+    border-radius:30px;
+}
+
+.cloud:before{
+    content:'';
+    position:absolute;
+    width:35px;
+    height:35px;
+    border-radius:50%;
+    background:white;
+    top:-18px;
+    left:8px;
+}
+
+.cloud:after{
+    content:'';
+    position:absolute;
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    background:white;
+    top:-22px;
+    right:5px;
+}
+
+.rain span{
+    position:absolute;
+    width:4px;
+    height:16px;
+    background:#38bdf8;
+    border-radius:10px;
+    animation:rain .8s infinite alternate;
+}
+
+.r1{left:35px;top:80px;}
+.r2{left:55px;top:80px;animation-delay:.2s;}
+.r3{left:75px;top:80px;animation-delay:.4s;}
+
+.snow span{
+    position:absolute;
+    color:white;
+    font-size:24px;
+    animation:snow 1s infinite alternate;
+}
+
+.s1{left:35px;top:80px;}
+.s2{left:65px;top:80px;animation-delay:.5s;}
+
+.bolt{
+    position:absolute;
+    left:55px;
+    top:55px;
+    font-size:36px;
+    color:#ffd43b;
+    animation:flash 1s infinite;
+}
+
+.fog{
+    position:absolute;
+    width:80px;
+    left:20px;
+    bottom:20px;
+}
+
+.fog span{
+    display:block;
+    height:4px;
+    background:white;
+    margin:7px 0;
+    opacity:.7;
+    animation:fog 2s infinite alternate;
+}
+
+@keyframes spin{
+    from{transform:rotate(0deg);}
+    to{transform:rotate(360deg);}
+}
+
+@keyframes rain{
+    from{transform:translateY(0);}
+    to{transform:translateY(10px);}
+}
+
+@keyframes snow{
+    from{transform:translateY(0);}
+    to{transform:translateY(6px);}
+}
+
+@keyframes flash{
+    0%,100%{opacity:.3;}
+    50%{opacity:1;}
+}
+
+@keyframes fog{
+    from{transform:translateX(0);}
+    to{transform:translateX(8px);}
+}
+
+
+
+.light{
+  --bg:#f8fafc;
+  --card:#ffffff;
+  --card2:#e2e8f0;
+  --text:#0f172a;
+  --muted:#64748b;
+  --accent:#2563eb;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:Aptos,"Segoe UI",sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  padding:20px;
+  transition:.3s;
+}
+
+.container{
+  max-width:550px;
+  margin:auto;
+}
+
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.theme{
+  border:none;
+  width:45px;
+  height:45px;
+  border-radius:50%;
+  background:var(--accent);
+  color:white;
+  cursor:pointer;
+}
+
+.card{
+  background:var(--card);
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:15px;
+}
+
+input,
+select{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:12px;
+  margin-top:10px;
+  background:var(--card2);
+  color:var(--text);
+}
+
+.current{
+  text-align:center;
+}
+
+.station{
+  font-size:26px;
+  font-weight:700;
+}
+
+.temp{
+  font-size:90px;
+  font-weight:700;
+}
+
+.condition{
+  color:var(--muted);
+  margin-top:5px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.item{
+  background:var(--card2);
+  border-radius:12px;
+  padding:15px;
+  text-align:center;
+}
+
+.weather-wrap{
+    height:120px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.label{
+  font-size:12px;
+  color:var(--muted);
+}
+
+.value{
+  font-size:20px;
+  font-weight:700;
+  margin-top:5px;
+}
+
+.footer{
+  text-align:center;
+  color:var(--muted);
+  margin-top:20px;
+}
+
+
+.icon{
+    position:relative;
+    width:120px;
+    height:120px;
+}
+
+
+.cloud{
+    width:80px;
+    height:30px;
+    background:white;
+    border-radius:30px;
+    margin:30px auto;
+    position:relative;
+}
+
+.cloud:before{
+    content:"";
+    width:35px;
+    height:35px;
+    border-radius:50%;
+    background:white;
+    position:absolute;
+    left:10px;
+    top:-15px;
+}
+
+.cloud:after{
+    content:"";
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    background:white;
+    position:absolute;
+    right:8px;
+    top:-20px;
+}
+
+@keyframes spin{
+    from{
+        transform:rotate(0deg);
+    }
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <h2>🌤️ Clima Chile</h2>
+    <button id="themeBtn" class="theme">🌙</button>
+  </div>
+
+  <div class="card">
+
+    <input
+      id="search"
+      type="text"
+      placeholder="Buscar ciudad o estación...">
+
+    <select id="stations"></select>
+
+  </div>
+
+  <div class="card current">
+
+    <div id="stationName" class="station">Cargando...</div>
+
+ <div id="weatherIcon" class="weather-wrap"></div>
+
+    <div class="temp">
+      <span id="temperature">--</span>°
+    </div>
+
+    <div id="condition" class="condition">
+      --
+    </div>
+
+  </div>
+
+  <div class="card">
+
+    <div class="grid">
+
+      <div class="item">
+        <div class="label">Humedad</div>
+        <div id="humidity" class="value">--</div>
+      </div>
+
+      <div class="item">
+        <div class="label">Hora</div>
+        <div id="hour" class="value">--</div>
+      </div>
+
+      <div class="item">
+        <div class="label">Código</div>
+        <div id="code" class="value">--</div>
+      </div>
+
+      <div class="item">
+        <div class="label">Estado</div>
+        <div id="statusText" class="value">--</div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="footer">
+    Datos: API Gael Cloud
+  </div>
+
+</div>
+
+<script>
+
+const API =
+"https://api.gael.cloud/general/public/clima";
+
+let stationsData = [];
+
+const select =
+document.getElementById("stations");
+
+const search =
+document.getElementById("search");
+
+// Dark Mode
+
+document
+.getElementById("themeBtn")
+.addEventListener("click",()=>{
+
+  document.body.classList.toggle("light");
+
+});
+
+// Mostrar estación
+
+
+// Render lista
+
+function renderStations(data){
+
+  select.innerHTML = "";
+
+  data.forEach(station => {
+
+    const option =
+      document.createElement("option");
+
+    option.value =
+      station.Codigo;
+
+    option.textContent =
+      station.Estacion;
+
+    select.appendChild(option);
+
+  });
+
+}
+
+// Cargar API
+
+async function loadWeather(){
+
+  try{
+
+    const response =
+      await fetch(API);
+
+    const data =
+      await response.json();
+
+    stationsData = data;
+
+    renderStations(data);
+
+    if(data.length){
+      showStation(data[0]);
+    }
+
+  }catch(error){
+
+    console.error(error);
+
+    document.getElementById(
+      "stationName"
+    ).textContent =
+      "Error cargando datos";
+
+  }
+
+}
+
+// Cambio estación
+
+select.addEventListener(
+"change",
+function(){
+
+  const station =
+    stationsData.find(
+      s => s.Codigo === this.value
+    );
+
+  if(station){
+    showStation(station);
+  }
+
+});
+
+
+function getWeatherIcon(estado){
+
+    estado =
+    (estado || "")
+    .toLowerCase();
+
+    if(
+        estado.includes("torment")
+    ){
+        return `
+        <div class="icon">
+            <div class="cloud"></div>
+            <div class="bolt">⚡</div>
+        </div>`;
+    }
+
+    if(
+        estado.includes("nev")
+    ){
+        return `
+        <div class="icon">
+            <div class="cloud"></div>
+
+            <div class="snow">
+                <span class="s1">❄</span>
+                <span class="s2">❄</span>
+            </div>
+        </div>`;
+    }
+
+    if(
+        estado.includes("lluv")
+    ){
+        return `
+        <div class="icon">
+
+            <div class="cloud"></div>
+
+            <div class="rain">
+                <span class="r1"></span>
+                <span class="r2"></span>
+                <span class="r3"></span>
+            </div>
+
+        </div>`;
+    }
+
+    if(
+        estado.includes("niebla") ||
+        estado.includes("neblina")
+    ){
+        return `
+        <div class="icon">
+
+            <div class="fog">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+        </div>`;
+    }
+
+    if(
+        estado.includes("escasa") ||
+        estado.includes("parcial")
+    ){
+        return `
+        <div class="icon">
+            <div class="sun"></div>
+            <div class="cloud"></div>
+        </div>`;
+    }
+
+    if(
+        estado.includes("nublado") ||
+        estado.includes("cubierto")
+    ){
+        return `
+        <div class="icon">
+            <div class="cloud"></div>
+        </div>`;
+    }
+
+    return `
+    <div class="icon">
+        <div class="sun"></div>
+    </div>`;
+}
+
+function updateBackground(temp){
+
+    temp = parseInt(temp);
+
+    if(temp >= 30){
+
+        document.body.style.background =
+        "linear-gradient(135deg,#ef4444,#f97316)";
+
+    } else if(temp >= 20){
+
+        document.body.style.background =
+        "linear-gradient(135deg,#0ea5e9,#3b82f6)";
+
+    } else {
+
+        document.body.style.background =
+        "linear-gradient(135deg,#1e293b,#0f172a)";
+
+    }
+
+}
+
+function showStation(st){
+
+updateBackground(st.Temp);
+
+    document.getElementById("stationName")
+      .textContent = st.Estacion;
+
+    document.getElementById("temperature")
+      .textContent = st.Temp;
+
+    document.getElementById("condition")
+      .textContent = st.Estado;
+
+    document.getElementById("humidity")
+      .textContent = st.Humedad + "%";
+
+    document.getElementById("hour")
+      .textContent = st.HoraUpdate;
+
+    document.getElementById("code")
+      .textContent = st.Codigo;
+
+    document.getElementById("statusText")
+      .textContent = st.Estado;
+
+   document.getElementById("weatherIcon")
+  .innerHTML =
+  getWeatherIcon(
+      st.Estado
+  );
+}
+
+setInterval(() => {
+
+    loadWeather();
+
+}, 300000);
+
+// Buscador
+
+search.addEventListener(
+"input",
+function(){
+
+  const text =
+    this.value.toLowerCase();
+
+  const filtered =
+    stationsData.filter(st =>
+
+      st.Estacion
+      .toLowerCase()
+      .includes(text)
+
+    );
+
+
+  renderStations(filtered);
+
+});
+
+loadWeather();
+
+</script>
+
+</body>
+</html>
